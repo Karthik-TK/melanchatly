@@ -30,8 +30,8 @@ def format_docs(docs):
 
 
 # Define the FastAPI endpoint
-@router.get("/query")
-def query_approach_to_task_decomposition(question: str, url: str = ""):
+@router.get("/v1/chat/query")
+def query_approach_to_rag(question: str, url: str = ""):
     # Load documents (example URL; replace with your actual URL)
     docs = load_documents(
         url
