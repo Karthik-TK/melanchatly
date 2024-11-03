@@ -109,8 +109,10 @@ function Home() {
           backgroundColor: "#fff",
         }}
       >
-        <h2>Past Chats</h2>
-        <div>No past chats available</div>
+        <h1>Melanchatly</h1>
+        <hr />
+        <h3>Past Conversations</h3>
+        <div>No past conversations available</div>
       </div>
 
       <div
