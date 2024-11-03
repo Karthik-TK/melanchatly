@@ -1,7 +1,8 @@
 import re
 
 from fastapi import APIRouter
-from langchain import OpenAI as OpenAILC
+
+# from langchain import OpenAI as OpenAILC
 from langchain.prompts import ChatPromptTemplate
 from openai import OpenAI
 
@@ -93,8 +94,7 @@ User: I’m from a small town in Italy, and I miss the food and my family a lot.
 Bot: Italian towns are so charming and full of culture! I bet the food must be incredible. It’s understandable to miss your family and those familiar flavors. Remember, those special memories and connections stay with you no matter where you go. Have you found any nice Italian places in your current city where you can enjoy a taste of home?
 """
 
-# Initialize the language model
-llm = OpenAILC(model_name="gpt-3.5-turbo", openai_api_key="YOUR_API_KEY")
+# llm = OpenAILC(model_name="gpt-3.5-turbo", openai_api_key="YOUR_API_KEY")
 
 # Create a prompt template
 prompt_template = ChatPromptTemplate.from_template(SYS_PROMPT)
