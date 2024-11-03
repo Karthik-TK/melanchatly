@@ -65,6 +65,7 @@ body {
   align-self: flex-start; /* Align bot messages to the left */
   margin-right: auto; /* Push bot messages to the left */
   width: fit-content;
+  padding-top: 8px;
 }
 
 h2 {

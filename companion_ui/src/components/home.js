@@ -10,8 +10,8 @@ function Home() {
   const [input, setInput] = useState("");
   const [isChatStarted, setIsChatStarted] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
   const inputRef = useRef(null);
-
   const navigate = useNavigate();
 
   const handleAnswerFromDocs = () => {
@@ -95,6 +95,18 @@ function Home() {
     }
   };
 
+  const handleTextToSpeech = (text) => {
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    } else {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.onend = () => setIsSpeaking(false);
+      window.speechSynthesis.speak(utterance);
+      setIsSpeaking(true);
+    }
+  };
+
   useEffect(() => {
     inputRef.current.focus();
   }, []);
@@ -159,7 +171,7 @@ function Home() {
               style={{
                 textAlign: msg.fromUser ? "right" : "left",
                 margin: "5px 0",
-                width: "100%", // Ensure it takes the full width
+                width: "100%",
                 display: "flex",
                 justifyContent: msg.fromUser ? "flex-end" : "flex-start",
               }}
@@ -173,10 +185,47 @@ function Home() {
                   padding: "10px",
                   borderRadius: "10px",
                   width: "fit-content",
-                  maxWidth: "70%", // Limit max width
+                  maxWidth: "70%",
+                  position: "relative",
                 }}
               >
                 <ReactMarkdown>{msg.text}</ReactMarkdown>
+                {msg.fromUser === false && ( // Only show the button for bot messages
+                  <button
+                    onClick={() => handleTextToSpeech(msg.text)}
+                    style={{
+                      position: "absolute",
+                      right: "10px",
+                      top: "10px",
+                      background: "transparent",
+                      border: "none",
+                      cursor: "pointer",
+                    }}
+                    aria-label={isSpeaking ? "Pause speech" : "Play speech"}
+                  >
+                    {isSpeaking ? (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="#007bff"
+                        width="30px"
+                        height="30px"
+                      >
+                        <path d="M6 6h2v12H6zm10 0h2v12h-2z" />
+                      </svg>
+                    ) : (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 24 24"
+                        fill="#007bff"
+                        width="20px"
+                        height="20px"
+                      >
+                        <path d="M10 8v8l5-4z" />
+                      </svg>
+                    )}
+                  </button>
+                )}
                 {msg.subMessages && msg.subMessages.length > 0 && (
                   <div
                     style={{
