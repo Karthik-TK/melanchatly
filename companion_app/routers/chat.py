@@ -1,6 +1,8 @@
 import re
 
 from fastapi import APIRouter
+from langchain import OpenAI as OpenAILC
+from langchain.prompts import ChatPromptTemplate
 from openai import OpenAI
 
 router = APIRouter()
@@ -57,6 +59,7 @@ sensitive_words = [
 ]
 
 more_help_keywords = [
+    "not helpful",
     "not helping",
     "provide more info",
     "need assistance",
@@ -89,6 +92,12 @@ Bot: I’m sorry to hear that you’re feeling this way. Homesickness can be tou
 User: I’m from a small town in Italy, and I miss the food and my family a lot.
 Bot: Italian towns are so charming and full of culture! I bet the food must be incredible. It’s understandable to miss your family and those familiar flavors. Remember, those special memories and connections stay with you no matter where you go. Have you found any nice Italian places in your current city where you can enjoy a taste of home?
 """
+
+# Initialize the language model
+llm = OpenAILC(model_name="gpt-3.5-turbo", openai_api_key="YOUR_API_KEY")
+
+# Create a prompt template
+prompt_template = ChatPromptTemplate.from_template(SYS_PROMPT)
 
 
 @router.post("/v1/chat/completions")
@@ -144,7 +153,7 @@ async def chat_completions(question: str):
             "It seems like you're looking for more assistance. Would like to reach out to other users who can help you better in your situation?"
         )
 
-    if any("Need More" in input_text_lower):
+    if "need more" in input_text_lower:
         response["respources"] = [
             "National Alliance on Mental Illness (NAMI): https://www.nami.org",
             "Substance Abuse and Mental Health Services Administration (SAMHSA): https://www.samhsa.gov",
