@@ -1,3 +1,3 @@
-# Companion AI
+# Melanchatly
 
 Hack.coms 2024
