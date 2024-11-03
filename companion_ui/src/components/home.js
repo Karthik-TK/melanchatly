@@ -52,9 +52,13 @@ function Home() {
                                 margin: '5px 0',
                                 maxWidth: '100%',
                                 wordWrap: 'break-word',
+                                overflowWrap: 'anywhere',
+                                wordBreak: 'break-word',
+                                whiteSpace: 'pre-wrap',
                                 backgroundColor: msg.fromUser ? '#e1ffc7' : '#f1f0f0',
                                 alignSelf: msg.fromUser ? 'flex-end' : 'flex-start', // Adjust alignment for user and bot
                                 textAlign: msg.fromUser ? 'right' : 'left',
+                                marginLeft: msg.fromUser ? 'auto' : '0',
                                 display: 'flex',
                                 justifyContent: msg.fromUser ? 'flex-end' : 'flex-start'
                             }}
@@ -127,13 +131,5 @@ function Home() {
             </div>
         </div>
     );
-
-    // return(
-    //     <div>
-    //         <h1> How are you today?</h1>
-    //         <p>Please input text.</p>
-    //     </div>
-    // );
-
 }
 export default Home;
