@@ -1,43 +1,45 @@
-import './App.css';
-import Home from './components/Home';
-import Profile from './components/Profile';
-import Chat from './components/Chat';
-import Login from './Login';
-import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
+import { useState } from "react";
+import {
+  Navigate,
+  Route,
+  BrowserRouter as Router,
+  Routes,
+} from "react-router-dom";
+import "./App.css";
+import Chat from "./components/chat";
+import Home from "./components/home";
+import Profile from "./components/profile";
+import Login from "./Login";
 
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-// function App() {
-//   return (
-//     <div className="App">
-      /* <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-         hello Learn React
-        </a>
-      </header> */
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
 
-
-      function App(){
-        return(
-      <Router>
-        <div className="App">
-          <Routes>
-            <Route exact path="/" element={<Home/>} />
-            <Route path="/Chat" element={<Chat/>} />
-            <Route path="/Profile" element={<Profile/>} />
-            <Route path="/Login" element={<Login/>} />
-          </Routes>
-      </div >
-      </Router>
-        );
-      }
+  return (
+    <Router>
+      <div className="App">
+        <Routes>
+          <Route
+            exact
+            path="/"
+            element={isLoggedIn ? <Home /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/Chat"
+            element={isLoggedIn ? <Chat /> : <Navigate to="/login" />}
+          />
+          <Route
+            path="/Profile"
+            element={isLoggedIn ? <Profile /> : <Navigate to="/login" />}
+          />
+          <Route path="/Login" element={<Login onLogin={handleLogin} />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+}
 
 export default App;
