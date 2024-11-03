@@ -68,6 +68,7 @@ more_help_keywords = [
     "need assistance",
     "can you clarify",
     "more details",
+    "put me in touch",
 ]
 
 
@@ -109,8 +110,8 @@ async def chat_completions(question: str):
         "refusal": None,
         "role": "assistant",
         "other_users": "",
-        "emergencey": "",
-        "resources": [""],
+        "emergency": "",
+        "resources": "",
     }
     client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
 
@@ -156,7 +157,7 @@ async def chat_completions(question: str):
         )
 
     if "need more" in input_text_lower:
-        response["respources"] = [
+        response["resources"] = [
             "National Alliance on Mental Illness (NAMI): https://www.nami.org",
             "Substance Abuse and Mental Health Services Administration (SAMHSA): https://www.samhsa.gov",
             "MentalHealth.gov: https://www.mentalhealth.gov",
