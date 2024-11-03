@@ -8,6 +8,8 @@ from openai import OpenAI
 
 router = APIRouter()
 
+# OPEN_AI_API_KEY = ""
+
 sensitive_words = [
     "suicide",
     "self-harm",
@@ -94,7 +96,7 @@ User: I’m from a small town in Italy, and I miss the food and my family a lot.
 Bot: Italian towns are so charming and full of culture! I bet the food must be incredible. It’s understandable to miss your family and those familiar flavors. Remember, those special memories and connections stay with you no matter where you go. Have you found any nice Italian places in your current city where you can enjoy a taste of home?
 """
 
-# llm = OpenAILC(model_name="gpt-3.5-turbo", openai_api_key="YOUR_API_KEY")
+# llm = OpenAILC(model_name="gpt-3.5-turbo", openai_api_key=OPEN_AI_API_KEY)
 
 # Create a prompt template
 prompt_template = ChatPromptTemplate.from_template(SYS_PROMPT)
@@ -124,8 +126,8 @@ async def chat_completions(question: str):
         temperature=0.7,
     )
 
-    print(completion.choices[0].message)
-    response["content"] = completion.choices[0].message["content"]
+    print(type(completion.choices[0].message))
+    response["content"] = completion.choices[0].message
 
     input_text_lower = question.lower()
 
