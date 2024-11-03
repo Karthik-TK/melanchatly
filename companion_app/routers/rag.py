@@ -31,9 +31,13 @@ def format_docs(docs):
 
 # Define the FastAPI endpoint
 @router.get("/query")
-def query_approach_to_task_decomposition(question: str):
+def query_approach_to_task_decomposition(question: str, url: str = ""):
     # Load documents (example URL; replace with your actual URL)
-    docs = load_documents("https://lilianweng.github.io/posts/2023-06-23-agent/")
+    docs = load_documents(
+        url
+        if url != "" or url is None
+        else "https://lilianweng.github.io/posts/2023-06-23-agent/"
+    )
     vectorstore = create_vector_store(docs)
 
     # Set up the RAG prompt
