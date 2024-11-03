@@ -1,7 +1,69 @@
+import re
+
 from fastapi import APIRouter
 from openai import OpenAI
 
 router = APIRouter()
+
+sensitive_words = [
+    "suicide",
+    "self-harm",
+    "cut",
+    "overdose",
+    "take my life",
+    "end it all",
+    "kill myself",
+    "end my pain",
+    "want to die",
+    "kill",
+    "murder",
+    "violence",
+    "beat",
+    "hurt",
+    "attack",
+    "harm",
+    "stab",
+    "shoot",
+    "bomb",
+    "explode",
+    "drug",
+    "alcohol",
+    "addiction",
+    "pills",
+    "tablet",
+    "heroin",
+    "meth",
+    "cocaine",
+    "marijuana",
+    "opioids",
+    "anxiety",
+    "depression",
+    "stress",
+    "panic",
+    "PTSD",
+    "bipolar",
+    "schizophrenia",
+    "mental illness",
+    "trauma",
+    "hopelessness",
+    "hopeless",
+    "alone",
+    "worthless",
+    "lost",
+    "despair",
+    "numb",
+    "empty",
+    "confusion",
+]
+
+more_help_keywords = [
+    "not helping",
+    "provide more info",
+    "need assistance",
+    "can you clarify",
+    "more details",
+]
+
 
 SYS_PROMPT = """
 You are a compassionate and supportive chatbot designed to comfort individuals who are feeling homesick. Your primary goal is to engage users in a warm and empathetic conversation about their feelings, inquire about their hometown, and provide comforting and positive words to help them feel more connected and less alone.
@@ -31,7 +93,14 @@ Bot: Italian towns are so charming and full of culture! I bet the food must be i
 
 @router.post("/v1/chat/completions")
 async def chat_completions(question: str):
-    # Point to the local server
+    response = {
+        "content": "",
+        "refusal": None,
+        "role": "assistant",
+        "other_users": "",
+        "emergencey": "",
+        "resources": [""],
+    }
     client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
 
     completion = client.chat.completions.create(
@@ -47,4 +116,48 @@ async def chat_completions(question: str):
     )
 
     print(completion.choices[0].message)
-    return completion.choices[0].message
+    response["content"] = completion.choices[0].message["content"]
+
+    input_text_lower = question.lower()
+
+    # Find sensitive words in the input text
+    detected_words = [
+        word
+        for word in sensitive_words
+        if re.search(r"\b" + re.escape(word) + r"\b", input_text_lower)
+    ]
+
+    if len(detected_words) > 0:
+        response["emergency"] = {
+            "911": "Emergency services (Police, Fire, Medical)",
+            "HealthCare": "1-800-273-8255",
+            "NearbyHospitals": {
+                "Strong Memorial Hospital": "601 Elmwood Ave, Rochester, NY 14642",
+                "Rochester General Hospital": "1425 Portland Ave, Rochester, NY 14621",
+                "Unity Hospital": "1555 Long Pond Rd, Rochester, NY 14626",
+            },
+            "PoisonControl": "1-800-222-1222",
+        }
+
+    if any(keyword in input_text_lower for keyword in more_help_keywords):
+        response["other_users"] = (
+            "It seems like you're looking for more assistance. Would like to reach out to other users who can help you better in your situation?"
+        )
+
+    if any("Need More" in input_text_lower):
+        response["respources"] = [
+            "National Alliance on Mental Illness (NAMI): https://www.nami.org",
+            "Substance Abuse and Mental Health Services Administration (SAMHSA): https://www.samhsa.gov",
+            "MentalHealth.gov: https://www.mentalhealth.gov",
+            "Crisis Text Line: https://www.crisistextline.org",
+            "National Suicide Prevention Lifeline: https://suicidepreventionlifeline.org",
+            "American Psychological Association (APA): https://www.apa.org",
+            "Mental Health America (MHA): https://www.mhanational.org",
+            "Veterans Affairs Mental Health: https://mentalhealth.va.gov",
+            "The Trevor Project (LGBTQ+ Youth): https://www.thetrevorproject.org",
+            "The Jed Foundation (JED): https://www.jedfoundation.org",
+            "Psychology Today Therapist Directory: https://www.psychologytoday.com/us/therapists",
+            "BetterHelp: https://www.betterhelp.com",
+        ]
+
+    return response
