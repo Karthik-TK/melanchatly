@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useEffect, useRef, useState } from "react";
 import ReactMarkdown from "react-markdown";
+import { useNavigate } from "react-router-dom";
 
 const MAIN_URL = "http://localhost:8081";
 
@@ -10,6 +11,12 @@ function Home() {
   const [isChatStarted, setIsChatStarted] = useState(false);
   const [loading, setLoading] = useState(false);
   const inputRef = useRef(null);
+
+  const navigate = useNavigate();
+
+  const handleAnswerFromDocs = () => {
+    navigate("/chat"); // Route to DocQuery component
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -113,6 +120,19 @@ function Home() {
         <hr />
         <h3>Past Conversations</h3>
         <div>No past conversations available</div>
+        <hr />
+        <button
+          onClick={handleAnswerFromDocs}
+          style={{
+            padding: "10px 20px",
+            backgroundColor: "#007bff",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+          }}
+        >
+          Answer from Your Docs
+        </button>
       </div>
 
       <div
