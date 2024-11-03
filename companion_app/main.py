@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import chat, ping
+from routers import chat, ping, rag
 
 app = FastAPI()
 
@@ -16,3 +16,4 @@ refresh_openapi_docs = False
 
 app.include_router(ping.router)
 app.include_router(chat.router)
+app.include_router(rag.router)
