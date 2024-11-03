@@ -1,11 +1,15 @@
 # Melanchatly: Your Personal AI Companion
 
-Melanchatly is an innovative personal AI companion application designed to assist users in their daily tasks through interactive chat and document queries. Built for the Hack.coms 2024 Hackathon, this project showcases the integration of a FastAPI backend with a React.js frontend.
+## 🏆 Winner of the MLH - Best AI Project with Databricks Open Source 2024 🎉
+
+We are proud to announce that our project won the [MLH Best AI Project](https://hack-coms-24.devpost.com/) award with the support of Databricks. More details of the project [here](https://devpost.com/software/melanchatly-home-away-from-home).
+
+Melanchatly is an innovative personal AI companion application designed to assist users as their personal companion for mental health through interactive chat and document queries. Built for the Hack.coms 2024 Hackathon, this project showcases the integration of a FastAPI backend with a React.js frontend.
 
 ## Project Structure
 
-- **companion_app**: The backend service developed using FastAPI.
 - **companion_ui**: The frontend user interface developed using React.js.
+- **companion_app**: The backend service developed using FastAPI.
 
 ## Features
 
@@ -29,7 +33,7 @@ Before you begin, ensure you have the following installed on your machine:
 1. **Clone the repository:**
 
    ```bash
-   git clone https://github.com/your-username/melanchatly.git
+   git clone https://github.com/karthik-tk/melanchatly.git
    cd melanchatly/companion_app
    ```
 
