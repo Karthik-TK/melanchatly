@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef} from "react";
-
+import { Link, Route, Routes } from "react-router-dom";
+import Login from "../Login";
 
 function Home() {
     const [messages, setMessages] = useState([]);
     const [input, setInput] = useState('');
     const [isChatStarted, setIsChatStarted] = useState(false);
     const inputRef = useRef(null);
+    const [username, setUsername] = useState('');
 
     const handleSend = () => {
         if (input.trim() !== '') {
@@ -30,18 +32,45 @@ function Home() {
     useEffect(() => {
         inputRef.current.focus();
     }, []);
+
+    const handleLogin = (username) => {
+        setUsername(username);
+    };
     
+    const isLoggedIn = !!username;//Determine if user is logged in based on the presence of username
     
     return (
-        <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f0f0f0', fontFamily: 'Arial, sans-serif' }}>
+        <div style={{ display: 'flex', height: '100vh', backgroundColor: '#f0f0f0', fontFamily: 'Arial, sans-serif', position: 'relative' }}>
+            {/* Login Button in Top Right */}
+            <div style={{
+                position: 'absolute',
+                top: '20px',
+                right: '20px',
+                zIndex: 1000, // Ensure it's on top of other elements
+            }}>
+                {isLoggedIn ? (
+                    <span style={{ padding: '10px', backgroundColor: '#007bff', color: 'white', borderRadius: '5px' }}>
+                        {username}
+                    </span>
+                ) : (
+                    <Link to="/Login" style={{
+                        padding: '10px 20px',
+                        backgroundColor: '#007bff',
+                        color: 'white',
+                        borderRadius: '5px',
+                        textDecoration: 'none'
+                    }}>Login</Link>
+                )}
+            </div>
+
             {/* Left column for past chats */}
-            <div style={{ flex: '0 0 20%', padding: '10px', borderRight: '1px solid #ccc', backgroundColor: '#fff' }}>
+            <div style={{ flex: '0 0 10%', padding: '10px', borderRight: '1px solid #ccc', backgroundColor: '#fff' }}>
                 <h2>Past Chats</h2>
                 <div>No past chats available</div>
             </div>
 
             {/* Main chat area */}
-            <div style={{ flex: '1', display: 'flex', flexDirection: 'column', padding: '20px' }}>
+            <div style={{ flex: '1', display: 'flex', flexDirection: 'column', padding: '20px', marginRight: '100px'}}>
                 <div style={{ flex: '1', overflowY: 'auto', border: '1px solid #ccc', borderRadius: '10px', padding: '10px', backgroundColor: '#fff' }}>
                     {messages.map((msg, index) => (
                         <div
@@ -129,7 +158,12 @@ function Home() {
                     </button>
                 </div>
             </div>
+            {/* Routes for the application */}
+            <Routes>
+                <Route path="/Login" element={<Login onLogin={handleLogin} />} />
+            </Routes>
         </div>
     );
 }
+
 export default Home;

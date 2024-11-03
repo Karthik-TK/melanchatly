@@ -1,13 +1,15 @@
 import './App.css';
-import Home from './components/home';
-import Profile from './components/profile';
-import Chat from './components/chat';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './components/Home';
+import Profile from './components/Profile';
+import Chat from './components/Chat';
+import Login from './Login';
+import { BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 
-function App() {
-  return (
-    <div className="App">
-      {/* <header className="App-header">
+
+// function App() {
+//   return (
+//     <div className="App">
+      /* <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
         <p>
           Edit <code>src/App.js</code> and save to reload.
@@ -20,18 +22,22 @@ function App() {
         >
          hello Learn React
         </a>
-      </header> */}
+      </header> */
+
+
+      function App(){
+        return(
       <Router>
         <div className="App">
           <Routes>
             <Route exact path="/" element={<Home/>} />
-            <Route path="/chat" element={<Chat/>} />
-            <Route path="/profile" element={<Profile/>} />
+            <Route path="/Chat" element={<Chat/>} />
+            <Route path="/Profile" element={<Profile/>} />
+            <Route path="/Login" element={<Login/>} />
           </Routes>
-        </div>
+      </div >
       </Router>
-    </div>
-  );
-}
+        );
+      }
 
 export default App;
