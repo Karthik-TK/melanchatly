@@ -1,7 +1,75 @@
+import re
+
 from fastapi import APIRouter
+
+# from langchain import OpenAI as OpenAILC
+from langchain.prompts import ChatPromptTemplate
 from openai import OpenAI
 
 router = APIRouter()
+
+# OPEN_AI_API_KEY = ""
+
+sensitive_words = [
+    "suicide",
+    "self-harm",
+    "cut",
+    "overdose",
+    "take my life",
+    "end it all",
+    "kill myself",
+    "end my pain",
+    "want to die",
+    "kill",
+    "murder",
+    "violence",
+    "beat",
+    "hurt",
+    "attack",
+    "harm",
+    "stab",
+    "shoot",
+    "bomb",
+    "explode",
+    "drug",
+    "alcohol",
+    "addiction",
+    "pills",
+    "tablet",
+    "heroin",
+    "meth",
+    "cocaine",
+    "marijuana",
+    "opioids",
+    "anxiety",
+    "depression",
+    "stress",
+    "panic",
+    "PTSD",
+    "bipolar",
+    "schizophrenia",
+    "mental illness",
+    "trauma",
+    "hopelessness",
+    "hopeless",
+    "alone",
+    "worthless",
+    "lost",
+    "despair",
+    "numb",
+    "empty",
+    "confusion",
+]
+
+more_help_keywords = [
+    "not helpful",
+    "not helping",
+    "provide more info",
+    "need assistance",
+    "can you clarify",
+    "more details",
+]
+
 
 SYS_PROMPT = """
 You are a compassionate and supportive chatbot designed to comfort individuals who are feeling homesick. Your primary goal is to engage users in a warm and empathetic conversation about their feelings, inquire about their hometown, and provide comforting and positive words to help them feel more connected and less alone.
@@ -28,10 +96,22 @@ User: I’m from a small town in Italy, and I miss the food and my family a lot.
 Bot: Italian towns are so charming and full of culture! I bet the food must be incredible. It’s understandable to miss your family and those familiar flavors. Remember, those special memories and connections stay with you no matter where you go. Have you found any nice Italian places in your current city where you can enjoy a taste of home?
 """
 
+# llm = OpenAILC(model_name="gpt-3.5-turbo", openai_api_key=OPEN_AI_API_KEY)
+
+# Create a prompt template
+prompt_template = ChatPromptTemplate.from_template(SYS_PROMPT)
+
 
 @router.post("/v1/chat/completions")
 async def chat_completions(question: str):
-    # Point to the local server
+    response = {
+        "content": "",
+        "refusal": None,
+        "role": "assistant",
+        "other_users": "",
+        "emergencey": "",
+        "resources": [""],
+    }
     client = OpenAI(base_url="http://localhost:1234/v1", api_key="lm-studio")
 
     completion = client.chat.completions.create(
@@ -46,5 +126,49 @@ async def chat_completions(question: str):
         temperature=0.7,
     )
 
-    print(completion.choices[0].message)
-    return completion.choices[0].message
+    print(type(completion.choices[0].message))
+    response["content"] = completion.choices[0].message
+
+    input_text_lower = question.lower()
+
+    # Find sensitive words in the input text
+    detected_words = [
+        word
+        for word in sensitive_words
+        if re.search(r"\b" + re.escape(word) + r"\b", input_text_lower)
+    ]
+
+    if len(detected_words) > 0:
+        response["emergency"] = {
+            "911": "Emergency services (Police, Fire, Medical)",
+            "HealthCare": "1-800-273-8255",
+            "NearbyHospitals": {
+                "Strong Memorial Hospital": "601 Elmwood Ave, Rochester, NY 14642",
+                "Rochester General Hospital": "1425 Portland Ave, Rochester, NY 14621",
+                "Unity Hospital": "1555 Long Pond Rd, Rochester, NY 14626",
+            },
+            "PoisonControl": "1-800-222-1222",
+        }
+
+    if any(keyword in input_text_lower for keyword in more_help_keywords):
+        response["other_users"] = (
+            "It seems like you're looking for more assistance. Would like to reach out to other users who can help you better in your situation?"
+        )
+
+    if "need more" in input_text_lower:
+        response["respources"] = [
+            "National Alliance on Mental Illness (NAMI): https://www.nami.org",
+            "Substance Abuse and Mental Health Services Administration (SAMHSA): https://www.samhsa.gov",
+            "MentalHealth.gov: https://www.mentalhealth.gov",
+            "Crisis Text Line: https://www.crisistextline.org",
+            "National Suicide Prevention Lifeline: https://suicidepreventionlifeline.org",
+            "American Psychological Association (APA): https://www.apa.org",
+            "Mental Health America (MHA): https://www.mhanational.org",
+            "Veterans Affairs Mental Health: https://mentalhealth.va.gov",
+            "The Trevor Project (LGBTQ+ Youth): https://www.thetrevorproject.org",
+            "The Jed Foundation (JED): https://www.jedfoundation.org",
+            "Psychology Today Therapist Directory: https://www.psychologytoday.com/us/therapists",
+            "BetterHelp: https://www.betterhelp.com",
+        ]
+
+    return response
