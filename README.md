@@ -1,6 +1,8 @@
 # Melanchatly: Your Personal AI Companion
 
-![MLH Best AI Project Winner](https://d112y698adiu2z.cloudfront.net/photos/production/achievement_photos/000/930/137/datas/fe7da55a06691d0a0fa2fb2f32d9d352_large_bronze.png)
+<p align="center">
+    <img src="https://d112y698adiu2z.cloudfront.net/photos/production/achievement_photos/000/930/137/datas/fe7da55a06691d0a0fa2fb2f32d9d352_large_bronze.png" width="300" height="300" />
+</p>
 
 ## 🏆 Winner of the [MLH] Best AI Project with Databricks Open Source 2024 🎉
 
