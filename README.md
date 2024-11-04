@@ -1,8 +1,10 @@
 # Melanchatly: Your Personal AI Companion
 
-## 🏆 Winner of the MLH - Best AI Project with Databricks Open Source 2024 🎉
+![MLH Best AI Project Winner](https://d112y698adiu2z.cloudfront.net/photos/production/achievement_photos/000/930/137/datas/fe7da55a06691d0a0fa2fb2f32d9d352_large_bronze.png)
 
-We are proud to announce that our project won the [MLH Best AI Project](https://hack-coms-24.devpost.com/) award with the support of Databricks. More details of the project [here](https://devpost.com/software/melanchatly-home-away-from-home).
+## 🏆 Winner of the [MLH] Best AI Project with Databricks Open Source 2024 🎉
+
+We are proud to announce that our project won the [[MLH] Best AI Project with Databricks Open Source](https://hack-coms-24.devpost.com/) award with the support of Databricks. More details of the project [here](https://devpost.com/software/melanchatly-home-away-from-home).
 
 Melanchatly is an innovative personal AI companion application designed to assist users as their personal companion for mental health through interactive chat and document queries. Built for the Hack.coms 2024 Hackathon, this project showcases the integration of a FastAPI backend with a React.js frontend.
 
